@@ -1,4 +1,4 @@
-# 🖥️ Verificador de Computador Gamer 🎮
+# 🖥️ Upgradify 🎮
 
 Este é um projeto desenvolvido em Django e Machine Learning para ajudar pais, tios, avós e outros familiares a verificarem se o computador que estão comprando para o neto, filho, sobrinho (ou até para si mesmos!) é adequado para jogos. A aplicação analisa as especificações do computador e fornece uma avaliação indicando se ele é "gamer" ou não.
 
