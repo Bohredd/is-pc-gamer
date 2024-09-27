@@ -99,9 +99,10 @@ Acesse a página principal da aplicação e preencha o formulário com as especi
 O modelo de Machine Learning foi treinado utilizando benchmarks de performance de hardware e requisitos de jogos populares. O objetivo do modelo é prever se uma combinação de CPU, GPU, RAM e armazenamento é suficiente para jogos.
 
 O pipeline de Machine Learning envolve:
-- Coleta de dados de benchmarks.
+- Coleta de dados de benchmarks via web-scrapping.
 - Treinamento de um modelo de classificação (usando Random Forest ou SVM).
 - Avaliação da precisão do modelo com dados reais de hardware.
+- Testes unitários de predição de recomendação dos hardwares
 
 ## 📦 API
 O projeto também oferece uma API RESTful para permitir que desenvolvedores integrem a verificação em outras aplicações.
