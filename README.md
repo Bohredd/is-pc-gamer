@@ -38,3 +38,85 @@ Este é um projeto desenvolvido em Django e Machine Learning para ajudar pais, t
    ```bash
    git clone https://github.com/seu-usuario/verificador-gamer.git
    cd verificador-gamer
+   ```
+   
+2. **Crie e ative um ambiente virtual**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # No Windows, use venv\Scripts\activate
+   ```
+
+3. **Instale as dependências**:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+   
+4. **Configure o banco de dados no arquivo settings.py**:
+
+   ```python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'nome_do_banco',
+           'USER': 'usuario',
+           'PASSWORD': 'senha',
+           'HOST': 'localhost',
+           'PORT': '5432',
+       }
+   }
+   ```
+   
+
+5. **Execute as migrações para configurar o banco de dados**:
+
+   ```python
+   python manage.py migrate
+   ```
+
+6. **Carregue os dados de hardware para treino do modelo (opcional)**:
+
+   ```bash
+   python manage.py loaddata dados_hardware.json
+   ```
+   
+7. **Inicie o servidor de desenvolvimento**:
+
+   ```bash
+   python manage.py runserver
+   ```
+   
+8. **Acesse o aplicativo no navegador**:
+
+   ```bash
+   http://localhost:8000
+   ```
+   
+# ⚙️ Uso
+Acesse a página principal da aplicação e preencha o formulário com as especificações do computador. O sistema irá analisar os dados e fornecer um diagnóstico sobre se o computador é "Gamer" ou não. Se o computador não for adequado, o sistema sugere upgrades no hardware.
+
+## 🤖 Machine Learning
+O modelo de Machine Learning foi treinado utilizando benchmarks de performance de hardware e requisitos de jogos populares. O objetivo do modelo é prever se uma combinação de CPU, GPU, RAM e armazenamento é suficiente para jogos.
+
+O pipeline de Machine Learning envolve:
+- Coleta de dados de benchmarks.
+- Treinamento de um modelo de classificação (usando Random Forest ou SVM).
+- Avaliação da precisão do modelo com dados reais de hardware.
+
+## 📦 API
+O projeto também oferece uma API RESTful para permitir que desenvolvedores integrem a verificação em outras aplicações.
+
+### Exemplos de Endpoints:
+- **POST** `/api/verificar/` – Envia as especificações do computador e retorna a avaliação.
+- **GET** `/api/recomendacoes/` – Obtém recomendações de upgrades para o hardware.
+
+## 📝 Contribuição
+Contribuições são bem-vindas! Siga os passos abaixo para contribuir:
+1. Fork o repositório.
+2. Crie uma nova branch: `git checkout -b minha-nova-feature`.
+3. Faça as alterações e commit: `git commit -m 'Adiciona nova feature'`.
+4. Envie para o seu fork: `git push origin minha-nova-feature`.
+5. Crie um Pull Request no GitHub.
+
+## 📄 Licença
+Este projeto está licenciado sob a MIT License.
