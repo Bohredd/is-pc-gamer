@@ -2,8 +2,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
+import joblib
+from app.upgradify.settings import MIN_GPU_SCORE
+import datetime
 
-# Dados das placas de vídeo com mais exemplos
+print("Hoje é", datetime.date.today())
 data = {
     "Modelo": [
         "Asus HD 6570 2GB",
@@ -119,7 +122,7 @@ data = {
 df = pd.DataFrame(data)
 
 # Definindo a classificação com base na pontuação
-df["Classificação"] = df["Pontuação"].apply(lambda x: 1 if x > 35 else 0)
+df["Classificação"] = df["Pontuação"].apply(lambda x: 1 if x > MIN_GPU_SCORE else 0)
 
 # Selecionando as características e a variável alvo
 X = df[["Preço (R$)", "TFLOPS", "Memória (GB)", "GPixels (GPixel/s)", "Pontuação"]]
@@ -128,20 +131,31 @@ y = df["Classificação"]
 # Preenchendo valores ausentes (se houver)
 X.fillna(X.mean(), inplace=True)
 
-# Dividindo os dados em conjuntos de treinamento e teste
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+# Caminho do arquivo onde o modelo será salvo
+model_filename = f"random_forest_model_gpu_{str(datetime.date.today())}.joblib"
 
-# Treinando o modelo
-model = RandomForestClassifier(random_state=42)
-model.fit(X_train, y_train)
+# Verifica se o modelo já foi salvo, caso contrário, treina e salva
+try:
+    # Carrega o modelo salvo
+    model = joblib.load(model_filename)
+    print("Modelo carregado do arquivo.")
+except FileNotFoundError:
+    # Dividindo os dados em conjuntos de treinamento e teste
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
-# Fazendo previsões
-y_pred = model.predict(X_test)
+    # Treinando o modelo
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X_train, y_train)
 
-# Avaliando o modelo
-print(classification_report(y_test, y_pred, target_names=["Não Boa", "Boa"]))
+    # Salvando o modelo em um arquivo
+    joblib.dump(model, model_filename)
+    print("Modelo treinado e salvo no arquivo.")
+
+    # Fazendo previsões e avaliando o modelo
+    y_pred = model.predict(X_test)
+    print(classification_report(y_test, y_pred, target_names=["Não Boa", "Boa"]))
 
 # Exemplo de previsão com novos dados
 novo_dado = pd.DataFrame(
@@ -159,3 +173,7 @@ classificacao_nova = model.predict(novo_dado)
 print(
     "Classificação da nova placa:", "Boa" if classificacao_nova[0] == 1 else "Não Boa"
 )
+
+# Treinamento da CPU
+
+model_filename = f"random_forest_model_cpu_{str(datetime.date.today())}.joblib"
