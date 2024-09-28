@@ -2,13 +2,17 @@ import re
 import spacy
 from django.core.management.base import BaseCommand
 from hardwares.models import CPU, GPU
-from app.upgradify.helpers import get_ram_value
+from app.upgradify.helpers import get_ram_value, calcular_nota_ram
 from app.upgradify.settings import (
     MIN_CPU_SCORE,
     MIN_GPU_SCORE,
     RAM_HIERARCHY,
     MIN_RAM_SIZE,
     MIN_STORAGE_SIZE,
+    RAM_HIERARCHY_MIN_SCORE,
+    RAM_SIZE_SCORE,
+    RAM_MIN_SCORE,
+    PC_GAMER_MIN_SCORE,
 )
 
 
@@ -22,6 +26,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         texto = kwargs["texto"]
+
+        notas = []
+        avisos = []
 
         cpus = CPU.objects.values_list("nome", flat=True)
         gpus = GPU.objects.all()
@@ -47,6 +54,8 @@ class Command(BaseCommand):
                 print("Encontrei o gráfico integrado:", grafico_integrado)
                 gpus_encontradas.append(grafico_integrado)
 
+        somatorio_pontuacao_pc = 0
+
         if cpus_encontradas:
             if len(cpus_encontradas) > 1:
                 somatorio = 0
@@ -55,14 +64,17 @@ class Command(BaseCommand):
 
                 pontuacao = somatorio / len(cpus_encontradas)
 
-                if pontuacao >= MIN_CPU_SCORE:
-                    is_good = True
+                avisos.append("Mais de uma CPU encontrada.")
             else:
                 pontuacao = CPU.objects.get(nome=cpus_encontradas[0]).pontuacao
-        else:
-            print("Nenhuma CPU encontrada.")
+            if pontuacao < MIN_CPU_SCORE:
+                avisos.append("Pontuação da CPU abaixo do mínimo.")
+            else:
+                notas.append(f"CPU suficiente.")
 
-        print("Pontuação:", pontuacao)
+            somatorio_pontuacao_pc += pontuacao
+        else:
+            avisos.append("Nenhuma CPU encontrada.")
 
         if gpus_encontradas:
             if len(gpus_encontradas) > 1:
@@ -75,15 +87,21 @@ class Command(BaseCommand):
 
                 pontuacao = somatorio / len(gpus_encontradas)
 
-                if pontuacao >= MIN_GPU_SCORE:
-                    is_good = True
+                avisos.append("Mais de uma GPU encontrada.")
             else:
-                pontuacao = gpus_encontradas[0].pontuacao
-        else:
-            print("Nenhuma GPU encontrada.")
+                if isinstance(gpus_encontradas[0], str):
+                    pontuacao = 5
+                else:
+                    pontuacao = gpus_encontradas[0].pontuacao
 
-        print("POntuação:", pontuacao)
-        # TODO: Encontrar a quantidade de armazenamento
+            if pontuacao < MIN_GPU_SCORE:
+                avisos.append("Pontuação da GPU abaixo do mínimo.")
+            else:
+                notas.append(f"GPU suficiente.")
+
+            somatorio_pontuacao_pc += pontuacao
+        else:
+            avisos.append("Nenhuma GPU encontrada.")
 
         if "DDR" in texto:
             DDR_TEXTO = re.search(r"DDR\d", texto)
@@ -100,14 +118,34 @@ class Command(BaseCommand):
                         if memoria in [gpu.memoria for gpu in gpus_encontradas]:
                             memorias_ram.remove(memoria)
 
-                    print("Memórias RAM restantes:", memorias_ram)
-
                 points_memory_ddr = get_ram_value(especificacao_ddr, RAM_HIERARCHY)
 
-                if int(memorias_ram[0].split("GB")[0]) >= MIN_RAM_SIZE:
-                    is_good = True
-                else:
-                    is_good = False
+                # print("Memórias RAM:", memorias_ram)
 
-                print("Pontos de memória:", points_memory_ddr)
-                print("É suficiente?", is_good)
+                if len(memorias_ram) > 1:
+                    memorias_ram = [memorias_ram[1]]
+
+                nota_memoria_ram = calcular_nota_ram(
+                    int(memorias_ram[0].split("GB")[0]), RAM_SIZE_SCORE
+                )
+
+                # print("Nota da Memória RAM:", nota_memoria_ram)
+                somatorio_pontuacao_pc += nota_memoria_ram
+
+                if nota_memoria_ram >= RAM_MIN_SCORE:
+
+                    if points_memory_ddr >= RAM_HIERARCHY_MIN_SCORE:
+                        notas.append(f"Memória RAM Suficiente")
+                    else:
+                        avisos.append("Velocidade da Memória RAM abaixo do mínimo.")
+                else:
+                    avisos.append("Tamanho da Memória RAM abaixo do mínimo.")
+
+            print("Nota para PC Gamer:", somatorio_pontuacao_pc)
+            print("Nota minimia para PC Gamer:", PC_GAMER_MIN_SCORE)
+            if somatorio_pontuacao_pc >= PC_GAMER_MIN_SCORE:
+                print("is a pc gamer")
+            else:
+                print("is not a pc gamer")
+            print("Notas:", notas)
+            print("Avisos:", avisos)
