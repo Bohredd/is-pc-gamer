@@ -70,11 +70,17 @@ class Command(BaseCommand):
                 break
 
         for info in infos_obtidas:
+            print(info)
             placa_de_video = info["top_container"].split("R$")[0].strip()
+            if "_gauge_max_light" in placa_de_video:
+                placa_de_video = placa_de_video.split("_gauge_max_light")[0].strip()
 
             price: str = "N/A"
             if "R$" in info["top_container"]:
                 price = info["top_container"].split("R$")[1].split("_cpu")[0].strip()
+
+            if "_gauge_max_light" in price:
+                price = f"R${price.split('_gauge_max_light')[0].strip()}"
 
             tflops: str = "N/A"
             if "_gauge_max_light" in info["top_container"]:

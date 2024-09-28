@@ -70,8 +70,11 @@ class Command(BaseCommand):
                 break
 
         for info in infos_obtidas:
+            print(info)
 
             processador = info["top_container"].split("R$")[0].strip()
+            if "_cpu" in processador:
+                processador = processador.split("_cpu")[0].strip()
 
             price: str = "N/A"
             if "R$" in info["top_container"]:
