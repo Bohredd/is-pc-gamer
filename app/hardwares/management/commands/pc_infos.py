@@ -49,6 +49,12 @@ class Command(BaseCommand):
             if gpu.is_in_text(texto):
                 gpus_encontradas.append(gpu)
 
+        if not gpus_encontradas:
+            for gpu in gpus:
+                print(gpu.nome)
+                if gpu.nome.lower() in texto.lower():
+                    gpus_encontradas.append(gpu)
+
         for grafico_integrado in graficos_integrados:
             if grafico_integrado.lower() in texto.lower():
                 print("Encontrei o gráfico integrado:", grafico_integrado)
@@ -120,22 +126,23 @@ class Command(BaseCommand):
 
                 points_memory_ddr = get_ram_value(especificacao_ddr, RAM_HIERARCHY)
 
-                # print("Memórias RAM:", memorias_ram)
-
+                print("Memórias RAM:", memorias_ram)
                 if len(memorias_ram) > 1:
-                    memorias_ram = [memorias_ram[1]]
+                    memorias_ram = [
+                        min(int(ram.replace("GB", "")) for ram in memorias_ram)
+                    ]
+                    memorias_ram = [f"{memorias_ram[0]}GB"]
 
                 nota_memoria_ram = calcular_nota_ram(
                     int(memorias_ram[0].split("GB")[0]), RAM_SIZE_SCORE
                 )
 
-                # print("Nota da Memória RAM:", nota_memoria_ram)
                 somatorio_pontuacao_pc += nota_memoria_ram
 
                 if nota_memoria_ram >= RAM_MIN_SCORE:
 
                     if points_memory_ddr >= RAM_HIERARCHY_MIN_SCORE:
-                        notas.append(f"Memória RAM Suficiente")
+                        notas.append(f"Memória RAM Suficiente e Velocidade Suficiente.")
                     else:
                         avisos.append("Velocidade da Memória RAM abaixo do mínimo.")
                 else:

@@ -153,6 +153,10 @@ O pipeline de Machine Learning envolve:
    ``` python
    python ./app/manage.py pc_infos "O PC conta com um AMD Ryzen Threadripper 3990X, sem placa de vídeo dedicada, e 64GB de memória DDR4."
    ```
+  
+    ```` python
+    python .\app\manage.py pc_infos "O PC é equipado com um processador Intel Core i3-10100, gráficos NVIDIA GeForce GTX 1650, 8GB de RAM DDR4 e SSD de 256GB."
+   ````
 ## 📦 API
 
 O projeto também oferece uma API RESTful para permitir que desenvolvedores integrem a verificação em outras aplicações.
