@@ -36,7 +36,7 @@ Este é um projeto desenvolvido em Django e Machine Learning para ajudar pais, t
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/seu-usuario/verificador-gamer.git
+   git clone https://github.com/bohredd/is-pc-gamer.git
    cd verificador-gamer
    ```
    
@@ -50,6 +50,7 @@ Este é um projeto desenvolvido em Django e Machine Learning para ajudar pais, t
 
    ```bash
    pip install -r requirements.txt
+   python -m spacy download pt_core_news_sm
    ```
    
 4. **Configure o banco de dados no arquivo settings.py**:
