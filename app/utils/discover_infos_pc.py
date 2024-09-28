@@ -5,7 +5,7 @@ def identificar_componentes(texto):
     componentes = {"processador": None, "placa_video": None, "memoria_ram": None}
 
     # Expressões regulares para identificar os componentes
-    processador_regex = r"(Intel\s*Core\s*i\d|\s*AMD\s*Ryzen\s*\d+|Intel\s*Pentium|Intel\s*Celeron|AMD\s*Athlon|Xeon|Threadripper|Core\s*i\d+|Ryzen\s*Threadripper)"
+    processador_regex = r"(Intel\s*Core\s*i\d{1,2}[- ]?\d{3,4}[A-Z]?|AMD\s*Ryzen\s*\d{3,}\w?|Intel\s*Pentium|Intel\s*Celeron|AMD\s*Athlon|Xeon|Threadripper|Core\s*i\d+|Ryzen\s*Threadripper)"
     placa_video_regex = r"(NVIDIA\s*GeForce\s*(RTX|GTX)?\s*\d+\s*(\d+GB)?|AMD\s*Radeon\s*(RX|Vega)?\s*\d+\s*(\d+GB)?|Intel\s*HD\s*Graphics|Vega|Arc)"
     memoria_ram_regex = r"(\d+\s?GB\s?(DDR\d|RAM))"
 
@@ -29,7 +29,7 @@ def identificar_componentes(texto):
 
 # Exemplo de uso
 texto = """
-Este computador vem equipado com um Processador Intel Core i7 de última geração, 
+Este computador vem equipado com um Processador Intel Core i7-2600K de última geração, 
 uma placa de vídeo NVIDIA GeForce RTX 3060 4GB e 16 GB DDR4 de Memória RAM.
 """
 

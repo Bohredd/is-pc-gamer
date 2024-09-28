@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "hardwares",
+    "usuarios",
 ]
 
 MIDDLEWARE = [
@@ -123,7 +124,9 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MIN_GPU_SCORE = 40
-MIN_CPU_SCORE = 42
+MIN_GPU_SCORE = 30
+MIN_CPU_SCORE = 37
 MIN_RAM_SIZE = 8
 MIN_STORAGE_SIZE = 256
+
+AUTH_USER_MODEL = "usuarios.Usuario"
