@@ -55,6 +55,19 @@ class Command(BaseCommand):
             gpus_entidades, gpus
         )
 
+        # Se SpaCy não encontrar, tentar usar regex
+        if not componentes["processador"]:
+            processador_regex = r"(Intel\s*Core\s*i\d+-\d+K?|AMD\s*Ryzen\s*\d+|Intel\s*Pentium|Intel\s*Celeron|AMD\s*Athlon|Xeon|Threadripper|Core\s*i\d+|Ryzen\s*Threadripper)"
+            processador = re.search(processador_regex, texto, re.IGNORECASE)
+            if processador:
+                componentes["processador"] = processador.group(0).strip()
+
+        if not componentes["placa_video"]:
+            placa_video_regex = r"(NVIDIA\s*GeForce\s*(RTX|GTX)?\s*\d+\s*(\d+GB)?|AMD\s*Radeon\s*(RX|Vega)?\s*\d+\s*(\d+GB)?|Intel\s*HD\s*Graphics|Vega|Arc)"
+            placa_video = re.search(placa_video_regex, texto, re.IGNORECASE)
+            if placa_video:
+                componentes["placa_video"] = placa_video.group(0).strip()
+
         # Identificar Memória RAM (ajustando diretamente do texto usando regex)
         memoria_ram_regex = r"(\d+\s?GB\s?(DDR\d|RAM))"
         memoria_ram = re.search(memoria_ram_regex, texto, re.IGNORECASE)

@@ -102,6 +102,7 @@ O modelo de Machine Learning foi treinado utilizando benchmarks de performance d
 O pipeline de Machine Learning envolve:
 - Coleta de dados de benchmarks via web-scrapping.
 - Treinamento de um modelo de classificação (usando Random Forest ou SVM).
+- Busca de dados de periféricos via Spacy.
 - Avaliação da precisão do modelo com dados reais de hardware.
 - Testes unitários de predição de recomendação dos hardwares
 
