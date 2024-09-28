@@ -125,8 +125,9 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MIN_GPU_SCORE = 30
-MIN_CPU_SCORE = 37
-MIN_RAM_SIZE = 8
+MIN_CPU_SCORE = 34
+MIN_RAM_SIZE = 16
 MIN_STORAGE_SIZE = 256
+RAM_HIERARCHY = [{"DDR2": 15}, {"DDR3": 25}, {"DDR4": 50}, {"DDR5": 100}]
 
 AUTH_USER_MODEL = "usuarios.Usuario"

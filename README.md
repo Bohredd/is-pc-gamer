@@ -131,7 +131,7 @@ O pipeline de Machine Learning envolve:
 
 - Exemplos:
    ``` python
-  python ./app/manage.py pc_infos "Este computador vem equipado com um Processador Intel Core i7-2600K, uma placa de vídeo NVIDIA GeForce RTX 3060 4GB e 16 GB DDR4 de Memória RAM."
+  python ./app/manage.py pc_infos "Este computador vem equipado com um Processador Intel Core i7-2600K, uma placa de vídeo NVIDIA GeForce RTX 3060 12GB e 16 GB DDR4 de Memória RAM."
   ```
 
    ``` python

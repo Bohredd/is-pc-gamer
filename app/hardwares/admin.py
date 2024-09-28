@@ -3,9 +3,33 @@ from .models import GPU, CPU
 
 
 class GPUAdmin(admin.ModelAdmin):
-    list_display = ("nome", "pontuacao", "preco", "tflops", "memoria", "gpixels")
-    list_filter = ("nome", "pontuacao", "preco", "tflops", "memoria", "gpixels")
-    search_fields = ("nome", "pontuacao", "preco", "tflops", "memoria", "gpixels")
+    list_display = (
+        "nome",
+        "pontuacao",
+        "preco",
+        "tflops",
+        "memoria",
+        "gpixels",
+        "identifier",
+    )
+    list_filter = (
+        "nome",
+        "pontuacao",
+        "preco",
+        "tflops",
+        "memoria",
+        "gpixels",
+        "identifier",
+    )
+    search_fields = (
+        "nome",
+        "pontuacao",
+        "preco",
+        "tflops",
+        "memoria",
+        "gpixels",
+        "identifier",
+    )
     ordering = ("pontuacao",)
 
 
