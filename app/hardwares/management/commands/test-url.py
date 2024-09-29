@@ -1,3 +1,5 @@
+import re
+
 import requests
 from django.core.management.base import BaseCommand
 from bs4 import BeautifulSoup
@@ -80,13 +82,9 @@ class Command(BaseCommand):
             # Usando getattr para selecionar o método apropriado (id ou class_)
             info_tecnica = soup.find(**{tipo: identificador})
 
-            print("Tipo:", tipo)
-            print("Identificador:", identificador)
-
             if info_tecnica:
                 # Exibe as informações encontradas
                 self.stdout.write(info_tecnica.get_text(strip=True, separator="\n"))
-                print(info_tecnica)
             else:
                 self.stdout.write(
                     self.style.WARNING(
