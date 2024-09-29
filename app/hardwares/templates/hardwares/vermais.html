@@ -1,0 +1,31 @@
+<!-- seu_template.html -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Hardware</title>
+</head>
+<body>
+    <h1>Resultados para "{{ query }}"</h1>
+
+    <h2>CPUs</h2>
+    <div id="cpu-results">
+        {% for cpu in cpu_results %}
+            <div data-id="{{ cpu.id }}">{{ cpu.nome }}</div>
+        {% empty %}
+            <p>Nenhuma CPU encontrada.</p>
+        {% endfor %}
+    </div>
+
+    <h2>GPUs</h2>
+    <div id="gpu-results">
+        {% for gpu in gpu_results %}
+            <div data-id="{{ gpu.id }}">{{ gpu.nome }} (ID: {{ gpu.identifier }})</div>
+        {% empty %}
+            <p>Nenhuma GPU encontrada.</p>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

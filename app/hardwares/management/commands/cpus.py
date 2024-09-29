@@ -76,6 +76,12 @@ class Command(BaseCommand):
             if "_cpu" in processador:
                 processador = processador.split("_cpu")[0].strip()
 
+            if "_nanometers" in processador:
+                processador = processador.split("_nanometers")[0].strip()
+
+            if "(" in processador:
+                processador = processador.split("(")[0].strip()
+
             price: str = "N/A"
             if "R$" in info["top_container"]:
                 price = info["top_container"].split("R$")[1].split("_cpu")[0].strip()

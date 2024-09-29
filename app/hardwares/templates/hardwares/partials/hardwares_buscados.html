@@ -1,0 +1,7 @@
+{% for hardware in results %}
+    <li class="dropdown-item" onclick="selectHardware('{{ hardware.id }}', '{{ hardware.name }}')">
+        {{ hardware.name }}
+    </li>
+{% empty %}
+    <li class="dropdown-item">Nenhum resultado encontrado</li>
+{% endfor %}
