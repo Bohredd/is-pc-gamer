@@ -145,3 +145,12 @@ RAM_HIERARCHY = [{"DDR1": 10}, {"DDR2": 20}, {"DDR3": 35}, {"DDR4": 50}, {"DDR5"
 PC_GAMER_MIN_SCORE = 120  # é o somatório de MIN_GPU, MIN_CPU, RAM_MIN_SCORE
 
 AUTH_USER_MODEL = "usuarios.Usuario"
+
+PONTUACOES_PC_GAMER = {
+    "otimo": 200,
+    "bom": 150,
+    "regular": 120,
+    "abaixo da média": 100,
+    "ruim": 70,
+    "péssimo": 50,
+}

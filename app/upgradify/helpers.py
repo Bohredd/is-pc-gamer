@@ -32,3 +32,10 @@ def calcular_nota_ram(tamanho_ram, RAM_SIZE_SCORE):
     return (
         0  # Retorna 0 para valores fora do escopo (menores que o mínimo, por exemplo)
     )
+
+
+def avaliar_pc_pela_nota(nota, PONTUACOES_PC_GAMER):
+    for avaliacao, pontuacao in PONTUACOES_PC_GAMER.items():
+        if nota >= pontuacao:
+            return avaliacao
+    return "Avaliação inválida"

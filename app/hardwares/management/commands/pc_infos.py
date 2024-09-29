@@ -2,7 +2,7 @@ import re
 import spacy
 from django.core.management.base import BaseCommand
 from hardwares.models import CPU, GPU
-from app.upgradify.helpers import get_ram_value, calcular_nota_ram
+from app.upgradify.helpers import get_ram_value, calcular_nota_ram, avaliar_pc_pela_nota
 from app.upgradify.settings import (
     MIN_CPU_SCORE,
     MIN_GPU_SCORE,
@@ -13,6 +13,7 @@ from app.upgradify.settings import (
     RAM_SIZE_SCORE,
     RAM_MIN_SCORE,
     PC_GAMER_MIN_SCORE,
+    PONTUACOES_PC_GAMER,
 )
 
 
@@ -156,3 +157,9 @@ class Command(BaseCommand):
                 print("is not a pc gamer")
             print("Notas:", notas)
             print("Avisos:", avisos)
+
+            avaliacao_pc = avaliar_pc_pela_nota(
+                somatorio_pontuacao_pc, PONTUACOES_PC_GAMER
+            )
+
+            print("Avaliação do PC:", avaliacao_pc)
