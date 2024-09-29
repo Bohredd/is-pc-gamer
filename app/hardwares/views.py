@@ -4,6 +4,7 @@ from .models import CPU, GPU
 from .utils.get_pc_infos import (
     identificar_componentes_hardware,
 )
+from .utils.get_text_anuncio import get_info_tecnica
 from django.db.models import Q
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -15,13 +16,19 @@ def home(request):
 
 def avaliador(request):
     resultado_avaliacao = None
+    componentes_encontrados = None
     if request.method == "POST":
         form = AvaliacaoForms(request.POST)
 
         print(form.errors)
         if form.is_valid():
             texto = form.cleaned_data["texto"]
-            resultado_avaliacao = identificar_componentes_hardware(texto)
+            if not texto:
+                texto = get_info_tecnica(form.cleaned_data["url"])
+            resultado_avaliacao, componentes_encontrados = (
+                identificar_componentes_hardware(texto)
+            )
+            print("Componentes encontrados:" + str(componentes_encontrados))
             print(resultado_avaliacao)
     else:
         form = AvaliacaoForms()
@@ -32,6 +39,7 @@ def avaliador(request):
         {
             "form": form,
             "resultado_avaliacao": resultado_avaliacao,
+            "componentes_encontrados": componentes_encontrados,
         },
     )
 

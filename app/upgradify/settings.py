@@ -153,7 +153,7 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 PONTUACOES_PC_GAMER = {
     "otimo": 200,
     "bom": 150,
-    "regular": 120,
+    "pc gamer de entrada": 120,
     "abaixo da média": 100,
     "ruim": 70,
     "péssimo": 50,

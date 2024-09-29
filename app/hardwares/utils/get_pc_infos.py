@@ -14,13 +14,16 @@ from upgradify.settings import (
 
 
 def identificar_componentes_hardware(texto):
+
+    print("Texto: " + texto)
+
     notas = []
     avisos = []
 
     cpus = CPU.objects.values_list("nome", flat=True)
     gpus = GPU.objects.all()
 
-    graficos_integrados = ["Intel HD Graphics", "AMD Radeon Graphics"]
+    graficos_integrados = ["Intel HD Graphics", "AMD Radeon Graphics", "Radeon Vega 7"]
     cpus_set = set(cpus)
 
     cpus_encontradas = []
@@ -41,6 +44,10 @@ def identificar_componentes_hardware(texto):
     # Busca GPUs por nome diretamente no texto
     if not gpus_encontradas:
         for gpu in gpus:
+
+            if "notebook" in texto.lower():
+                pass  # ajustar aqui
+
             if gpu.nome.lower() in texto.lower():
                 gpus_encontradas.append(gpu)
 
@@ -48,6 +55,7 @@ def identificar_componentes_hardware(texto):
     for grafico_integrado in graficos_integrados:
         if grafico_integrado.lower() in texto.lower():
             gpus_encontradas.append(grafico_integrado)
+            avisos.append("Gráfico integrado encontrado.")
 
     somatorio_pontuacao_pc = 0
 
@@ -95,7 +103,8 @@ def identificar_componentes_hardware(texto):
     else:
         avisos.append("Nenhuma GPU encontrada.")
 
-    # Verifica e avalia a memória RAM
+    memorias_ram = []
+
     if "DDR" in texto:
         DDR_TEXTO = re.search(r"DDR\d", texto)
         if DDR_TEXTO:
@@ -129,4 +138,9 @@ def identificar_componentes_hardware(texto):
         "notas": notas,
         "avisos": avisos,
         "avaliacao_pc": avaliacao_pc,
+    }, {
+        "cpus_encontradas": cpus_encontradas,
+        "gpus_encontradas": gpus_encontradas,
+        "especificacao_ddr": especificacao_ddr,
+        "memorias_ram": memorias_ram,
     }
