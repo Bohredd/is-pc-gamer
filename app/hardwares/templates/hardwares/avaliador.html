@@ -1,0 +1,12 @@
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Enviar</button>
+</form>
+
+{% if resultado_avaliacao %}
+  <h3>Resultado da Avaliação</h3>
+  <p>Notas: {{ resultado_avaliacao.notas }}</p>
+  <p>Avisos: {{ resultado_avaliacao.avisos }}</p>
+  <p>Avaliação do PC: {{ resultado_avaliacao.avaliacao_pc }}</p>
+{% endif %}
