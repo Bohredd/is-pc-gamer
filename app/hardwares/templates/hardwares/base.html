@@ -12,7 +12,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="#">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
             <img src="{% static 'images/upgradify.png' %}" alt="Logo" width="40" height="40"
                  class="d-inline-block align-text-top">
             <span class="ms-2 d-none d-lg-inline">Upgradify</span>
@@ -50,6 +50,15 @@
     </div>
 </nav>
 
+{% block dadospagina %}
+{% endblock %}
+
+{% block conteudo %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
 <script>
     document.getElementById('autocomplete-input').addEventListener('input', function () {
         const resultsContainer = document.getElementById('autocomplete-results');
@@ -80,6 +89,4 @@
             }
         }
     });
-
-
 </script>

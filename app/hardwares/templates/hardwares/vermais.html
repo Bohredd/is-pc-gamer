@@ -1,12 +1,5 @@
-<!-- seu_template.html -->
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Resultados de Hardware</title>
-</head>
-<body>
+{% extends 'hardwares/base.html' %}
+{% block conteudo %}
     <h1>Resultados para "{{ query }}"</h1>
 
     <h2>CPUs</h2>
@@ -26,6 +19,4 @@
             <p>Nenhuma GPU encontrada.</p>
         {% endfor %}
     </div>
-
-</body>
-</html>
+{% endblock %}
