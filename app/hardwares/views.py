@@ -38,3 +38,7 @@ def login(request):
 
 def cadastro(request):
     return render(request, "hardwares/cadastro.html")
+
+
+def base(request):
+    return render(request, "hardwares/base.html")
