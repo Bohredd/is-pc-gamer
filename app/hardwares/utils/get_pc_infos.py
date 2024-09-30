@@ -36,36 +36,6 @@ def identificar_componentes_hardware(texto):
         if cpu.lower() in texto.lower():
             cpus_encontradas.append(cpu)
 
-    # Identifica GPUs no texto
-    for gpu in gpus:
-        if gpu.is_in_text(texto):
-            gpus_encontradas.append(gpu)
-
-    # Busca GPUs por nome diretamente no texto
-    if not gpus_encontradas:
-        for gpu in gpus:
-
-            if gpu.nome.lower() in texto.lower():
-                gpus_encontradas.append(gpu)
-
-    if not gpus_encontradas:
-        remocoes_nome = ["NVIDIA", "GeForce", "AMD", "Radeon"]
-
-        for gpu in gpus:
-            nome = gpu.nome
-
-            for remocao in remocoes_nome:
-                nome = nome.replace(remocao, "").strip()
-
-            if nome.lower() in texto.lower():
-
-                for cpu in cpus_encontradas:
-
-                    if cpu.lower() in nome.lower():
-                        pass
-                    else:
-                        gpus_encontradas.append(gpu)
-
     if not cpus_encontradas:
         remocoes_nome = ["NVIDIA", "GeForce", "AMD", "Radeon"]
 
@@ -76,11 +46,82 @@ def identificar_componentes_hardware(texto):
             if nome in texto.lower():
                 cpus_encontradas.append(cpu)
 
+    # Identifica GPUs no texto
+    for gpu in gpus:
+        if gpu.is_in_text(texto):
+            gpus_encontradas.append(gpu)
+        elif gpu.nome.lower() in texto.lower():
+            gpus_encontradas.append(gpu)
+
+    if not gpus_encontradas:
+        remocoes_nome = [
+            "NVIDIA",
+            "AMD",
+            "Radeon",
+            "Laptop",
+        ]
+
+        for gpu in gpus:
+            nome = gpu.nome
+
+            # print("Nome: " + nome)
+
+            for remocao in remocoes_nome:
+                nome = nome.replace(remocao.lower(), "").strip()
+
+            if nome.lower() in texto.lower():
+                print("Nome: " + nome)
+
+                for cpu in cpus_encontradas:
+
+                    if cpu.lower() in nome.lower():
+                        pass
+                    else:
+                        gpus_encontradas.append(gpu)
+
+    # Tratamento para GPUs não encontradas retirando memórias
+    if not gpus_encontradas:
+        remocoes_nome = [
+            "NVIDIA",
+            "AMD",
+            "Radeon",
+            "Laptop",
+        ]
+
+        for gpu in gpus:
+            nome = gpu.nome
+
+            for remocao in remocoes_nome:
+                nome = nome.lower().replace(remocao.lower(), "").strip()
+                nome = nome.lower().replace("gddr", "").strip()
+                for i in range(0, 50):
+                    nome = nome.replace(f"{str(i)}gb", "").strip()
+                    nome = nome.replace(f"{str(i)} gb", "").strip()
+
+            if "rtx 3060" in nome:
+                print("Nome: " + nome)
+
+                print("Texto: " + texto)
+
+            if nome.lower().strip() in texto.lower():
+                print("Nome: " + nome)
+
+                for cpu in cpus_encontradas:
+
+                    if cpu.lower() in nome.lower():
+                        pass
+                    else:
+                        gpus_encontradas.append(gpu)
+
     # Verifica gráficos integrados
     for grafico_integrado in graficos_integrados:
         if grafico_integrado.lower() in texto.lower():
             gpus_encontradas.append(grafico_integrado)
             avisos.append("Gráfico integrado encontrado.")
+
+            for gpu in gpus_encontradas:
+                if gpu not in graficos_integrados:
+                    gpus_encontradas.remove(gpu)
 
     somatorio_pontuacao_pc = 0
 
@@ -178,7 +219,6 @@ def identificar_componentes_hardware(texto):
             else:
                 avisos.append("Tamanho da Memória RAM abaixo do mínimo.")
 
-    # Avaliação final
     avaliacao_pc = avaliar_pc_pela_nota(somatorio_pontuacao_pc, PONTUACOES_PC_GAMER)
 
     return {
