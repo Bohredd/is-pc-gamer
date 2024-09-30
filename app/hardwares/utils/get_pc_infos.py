@@ -45,11 +45,36 @@ def identificar_componentes_hardware(texto):
     if not gpus_encontradas:
         for gpu in gpus:
 
-            if "notebook" in texto.lower():
-                pass  # ajustar aqui
-
             if gpu.nome.lower() in texto.lower():
                 gpus_encontradas.append(gpu)
+
+    if not gpus_encontradas:
+        remocoes_nome = ["NVIDIA", "GeForce", "AMD", "Radeon"]
+
+        for gpu in gpus:
+            nome = gpu.nome
+
+            for remocao in remocoes_nome:
+                nome = nome.replace(remocao, "").strip()
+
+            if nome.lower() in texto.lower():
+
+                for cpu in cpus_encontradas:
+
+                    if cpu.lower() in nome.lower():
+                        pass
+                    else:
+                        gpus_encontradas.append(gpu)
+
+    if not cpus_encontradas:
+        remocoes_nome = ["NVIDIA", "GeForce", "AMD", "Radeon"]
+
+        for cpu in cpus_set:
+            nome = cpu.lower()
+            for remocao in remocoes_nome:
+                nome = nome.replace(remocao.lower(), "").strip()
+            if nome in texto.lower():
+                cpus_encontradas.append(cpu)
 
     # Verifica gráficos integrados
     for grafico_integrado in graficos_integrados:
@@ -114,6 +139,29 @@ def identificar_componentes_hardware(texto):
             points_memory_ddr = get_ram_value(especificacao_ddr, RAM_HIERARCHY)
 
             if len(memorias_ram) > 1:
+
+                arrumado = False
+                for i in range(len(memorias_ram)):
+                    texto_antes, texto_pos = texto.split(memorias_ram[i])
+
+                    for j in range(len(memorias_ram)):
+
+                        if "ram" in texto_pos.lower():
+                            outras_memorias_presentes = any(
+                                m in texto_pos
+                                for m in memorias_ram
+                                if m != memorias_ram[j]
+                            )
+
+                            if not outras_memorias_presentes:
+
+                                memorias_ram = [memorias_ram[j]]
+                                arrumado = True
+                                break
+
+                    if arrumado:
+                        break
+
                 memorias_ram = [min(int(ram.replace("GB", "")) for ram in memorias_ram)]
                 memorias_ram = [f"{memorias_ram[0]}GB"]
 
